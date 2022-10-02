@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tinder_chuck/screens/home.dart';
+import 'package:tinder_chuck/screens/home/home.dart';
 
 class TinderChuckApp extends StatelessWidget {
   const TinderChuckApp({super.key});
@@ -11,7 +11,8 @@ class TinderChuckApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const HomeScreen(title: 'Tinder with Chuck Norris'),
+      home:
+          const SafeArea(child: HomeScreen(title: 'Tinder with Chuck Norris')),
     );
   }
 }
