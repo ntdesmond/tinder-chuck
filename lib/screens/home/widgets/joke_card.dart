@@ -2,16 +2,22 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:tinder_chuck/models/joke.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class JokeCard extends StatelessWidget {
   const JokeCard(
-      {super.key,
-      required this.joke,
-      required this.onNewJokePressed,
-      required this.onOpenBrowserPressed});
+      {super.key, required this.joke, required this.onNewJokePressed});
 
   final Joke joke;
-  final VoidCallback onNewJokePressed, onOpenBrowserPressed;
+  final VoidCallback onNewJokePressed;
+
+  void openBrowser() {
+    if (joke.url == null) {
+      return;
+    }
+
+    launchUrlString(joke.url!, mode: LaunchMode.externalApplication);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +59,16 @@ class JokeCard extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline4,
                       ),
                       const SizedBox(height: 20),
-                      Text(joke.value),
-                      const Spacer(),
-                      if (joke.url != null) OutlinedButton(
-                        onPressed: onOpenBrowserPressed,
-                        child: const Text("Open in browser"),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Text(joke.value),
+                        ),
                       ),
+                      if (joke.url != null)
+                        OutlinedButton(
+                          onPressed: openBrowser,
+                          child: const Text("Open in browser"),
+                        ),
                       ElevatedButton(
                         onPressed: onNewJokePressed,
                         style: ElevatedButton.styleFrom(

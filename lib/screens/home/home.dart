@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tinder_chuck/models/joke.dart';
-import 'package:tinder_chuck/screens/home/widgets/card.dart';
+import 'package:tinder_chuck/screens/home/widgets/joke_card.dart';
 import 'package:tinder_chuck/services/joke_service.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({super.key, required this.title});
@@ -23,14 +22,6 @@ class HomeScreenState extends State<HomeScreen> {
     showNewJoke();
   }
 
-  void openBrowser() {
-    if (joke.url == null) {
-      return;
-    }
-
-    launchUrlString(joke.url!, mode: LaunchMode.externalApplication);
-  }
-
   void showNewJoke() {
     widget.service
         .getRandomJoke()
@@ -48,7 +39,6 @@ class HomeScreenState extends State<HomeScreen> {
         child: JokeCard(
           joke: joke,
           onNewJokePressed: showNewJoke,
-          onOpenBrowserPressed: openBrowser,
         ),
       ),
     );
