@@ -5,10 +5,13 @@ import 'package:tinder_chuck/models/joke.dart';
 
 class JokeCard extends StatelessWidget {
   const JokeCard(
-      {super.key, required this.joke, required this.onNewJokePressed});
+      {super.key,
+      required this.joke,
+      required this.onNewJokePressed,
+      required this.onOpenBrowserPressed});
 
   final Joke joke;
-  final VoidCallback onNewJokePressed;
+  final VoidCallback onNewJokePressed, onOpenBrowserPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +55,10 @@ class JokeCard extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(joke.value),
                       const Spacer(),
+                      if (joke.url != null) OutlinedButton(
+                        onPressed: onOpenBrowserPressed,
+                        child: const Text("Open in browser"),
+                      ),
                       ElevatedButton(
                         onPressed: onNewJokePressed,
                         style: ElevatedButton.styleFrom(
