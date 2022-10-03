@@ -1,13 +1,13 @@
-import 'dart:ui';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'dart:math' as math;
+import 'package:tinder_chuck/models/joke.dart';
 
 class JokeCard extends StatelessWidget {
   const JokeCard(
       {super.key, required this.joke, required this.onNewJokePressed});
 
-  final String joke;
+  final Joke joke;
   final VoidCallback onNewJokePressed;
 
   @override
@@ -34,13 +34,19 @@ class JokeCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Text("Joke ID: ${joke.id}",
+                        style: Theme.of(context).textTheme.bodySmall)),
+              ),
               Text(
                 "Joke for you!",
                 style: Theme.of(context).textTheme.headline4,
               ),
               const SizedBox(height: 20),
-              Text(joke),
+              Text(joke.value),
               const Spacer(),
               ElevatedButton(
                 onPressed: onNewJokePressed,
@@ -50,7 +56,7 @@ class JokeCard extends StatelessWidget {
                         horizontal: 20, vertical: 10),
                     textStyle: Theme.of(context).textTheme.headline6),
                 child: const Text("New joke"),
-              )
+              ),
             ],
           ),
         ),

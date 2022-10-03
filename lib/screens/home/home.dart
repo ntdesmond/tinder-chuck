@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tinder_chuck/models/joke.dart';
 import 'package:tinder_chuck/screens/home/widgets/card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -26,7 +27,7 @@ class HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: JokeCard(
-          joke: "Some funny joke goes here",
+          joke: Joke(id: 'epofkoppolflp[ds', value: 'joke text lol'),
           onNewJokePressed: showNewJoke,
         ),
       ),
