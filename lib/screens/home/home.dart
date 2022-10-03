@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:tinder_chuck/models/joke.dart';
 import 'package:tinder_chuck/screens/home/widgets/card.dart';
+import 'package:tinder_chuck/services/joke_service.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
+  HomeScreen({super.key, required this.title});
 
   final String title;
+  final JokeService service = JokeService();
 
   @override
   State<HomeScreen> createState() => HomeScreenState();
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  String joke = "joke text";
+  Joke joke = Joke(id: '-', value: 'Loading...');
+
+  @override
+  void initState() {
+    super.initState();
+    showNewJoke();
+  }
 
   void showNewJoke() {
-    setState(() => joke = "some funny joke here");
+    widget.service
+        .getRandomJoke()
+        .then((value) => setState(() => joke = value));
   }
 
   @override
@@ -27,7 +37,7 @@ class HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: JokeCard(
-          joke: Joke(id: 'epofkoppolflp[ds', value: 'joke text lol'),
+          joke: joke,
           onNewJokePressed: showNewJoke,
         ),
       ),

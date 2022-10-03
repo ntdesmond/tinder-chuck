@@ -34,28 +34,36 @@ class JokeCard extends StatelessWidget {
                   ),
                 ),
               ),
-              Align(
-                alignment: Alignment.centerLeft,
+              Expanded(
                 child: Padding(
-                    padding: const EdgeInsets.all(5),
-                    child: Text("Joke ID: ${joke.id}",
-                        style: Theme.of(context).textTheme.bodySmall)),
-              ),
-              Text(
-                "Joke for you!",
-                style: Theme.of(context).textTheme.headline4,
-              ),
-              const SizedBox(height: 20),
-              Text(joke.value),
-              const Spacer(),
-              ElevatedButton(
-                onPressed: onNewJokePressed,
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: cardColor,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    textStyle: Theme.of(context).textTheme.headline6),
-                child: const Text("New joke"),
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text("Joke ID: ${joke.id}",
+                            style: Theme.of(context).textTheme.bodySmall),
+                      ),
+                      Text(
+                        "Joke for you!",
+                        style: Theme.of(context).textTheme.headline4,
+                      ),
+                      const SizedBox(height: 20),
+                      Text(joke.value),
+                      const Spacer(),
+                      ElevatedButton(
+                        onPressed: onNewJokePressed,
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: cardColor,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            textStyle: Theme.of(context).textTheme.headline6),
+                        child: const Text("New joke"),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ],
           ),
