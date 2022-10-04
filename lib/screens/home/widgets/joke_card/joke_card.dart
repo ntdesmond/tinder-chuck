@@ -2,14 +2,17 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:tinder_chuck/models/joke.dart';
+import 'package:tinder_chuck/screens/home/widgets/joke_card/joke_card_image.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class JokeCard extends StatelessWidget {
-  const JokeCard(
-      {super.key, required this.joke, required this.onNewJokePressed});
+  JokeCard({super.key, required this.joke, required this.onNewJokePressed});
 
-  final Joke joke;
   final VoidCallback onNewJokePressed;
+  final Joke joke;
+
+  final Color cardColor =
+      Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
 
   void openBrowser() {
     if (joke.url == null) {
@@ -21,9 +24,6 @@ class JokeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardColor =
-        Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
-
     return ConstrainedBox(
       constraints: const BoxConstraints.expand(),
       child: Card(
@@ -32,17 +32,11 @@ class JokeCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              AspectRatio(
-                aspectRatio: 1,
-                child: Container(
-                  color: cardColor,
-                  child: const Padding(
-                    padding: EdgeInsets.all(20),
-                    child: Image(
-                        image: AssetImage("assets/images/chucknorris.png")),
-                  ),
-                ),
-              ),
+              JokeCardImage(
+                  bgColor: cardColor,
+                  image: const Image(
+                    image: AssetImage('./assets/images/chucknorris.png'),
+                  )),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(10),

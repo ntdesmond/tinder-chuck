@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tinder_chuck/models/joke.dart';
-import 'package:tinder_chuck/screens/home/widgets/joke_card.dart';
+import 'package:tinder_chuck/screens/home/widgets/joke_card/joke_card.dart';
 import 'package:tinder_chuck/services/joke_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,18 +13,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  Joke joke = Joke(id: '-', value: 'Loading...');
+  final int stackLength = 10;
+  List<JokeCard> cards = <JokeCard>[];
+
+  void addNewJoke() {
+    widget.service.getRandomJoke().then(
+          (joke) => setState(
+            () {
+              var newCard = JokeCard(joke: joke, onNewJokePressed: switchCards);
+              cards = [newCard, ...cards];
+            },
+          ),
+        );
+  }
 
   @override
   void initState() {
     super.initState();
-    showNewJoke();
+    for (int i = 0; i < stackLength; i++) {
+      addNewJoke();
+    }
   }
 
-  void showNewJoke() {
-    widget.service
-        .getRandomJoke()
-        .then((value) => setState(() => joke = value));
+  void switchCards() {
+    // Remove the foremost card (the last one in the list)
+    setState(() => cards = [...cards.getRange(0, cards.length - 1)]);
+
+    // Add the new joke to the back of the stack
+    addNewJoke();
   }
 
   @override
@@ -35,11 +50,8 @@ class HomeScreenState extends State<HomeScreen> {
         title: Text(widget.title),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(24),
-        child: JokeCard(
-          joke: joke,
-          onNewJokePressed: showNewJoke,
-        ),
+        padding: const EdgeInsets.all(30),
+        child: Stack(children: cards),
       ),
     );
   }
