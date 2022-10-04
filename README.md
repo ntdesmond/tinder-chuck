@@ -6,6 +6,15 @@ Tinder, but the only candidate is Chuck Norris.
 
 ***Tinder Chuck!*** is a [flutter](https://github.com/flutter/flutter) app with jokes fetched from [chuck-api](https://github.com/chucknorris-io/chuck-api), displayed as swipeable cards, much like profiles in Tinder.
 
+## Features
+
+- **Swipeable cards** (no "New joke" button, sorry if you are unable to swipe)
+- Jokes can be **opened in a browser** (at <https://api.chucknorris.io/>)
+- Joke text can be copied right away
+- Joke text is scrollable if it does not fit fully on the card
+- Joke cards have a drawing of Chuck Norris from <https://github.com/chucknorris-io/>
+  - Picture background color is randomized
+
 ## Screenshots and video
 
 <table>
