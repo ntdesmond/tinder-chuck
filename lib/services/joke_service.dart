@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 
-import '../models/joke.dart';
+import 'package:tinder_chuck/models/joke.dart';
 
 class JokeService {
-  JokeService({this.apiRoot = "https://api.chucknorris.io/"})
+  JokeService({this.apiRoot = 'https://api.chucknorris.io/'})
       : client = Dio(BaseOptions(baseUrl: apiRoot));
 
   final String apiRoot;

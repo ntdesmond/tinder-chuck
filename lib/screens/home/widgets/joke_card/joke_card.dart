@@ -24,7 +24,7 @@ class JokeCard extends StatefulWidget {
 }
 
 class JokeCardState extends State<JokeCard> {
-  Joke joke = Joke(id: "", value: "Loading...");
+  Joke joke = Joke(id: '', value: 'Loading...');
   final Color cardColor =
       Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
 
@@ -67,12 +67,12 @@ class JokeCardState extends State<JokeCard> {
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        "Joke ID: ${joke.id}",
+                        'Joke ID: ${joke.id}',
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ),
                     Text(
-                      "Joke for you!",
+                      'Joke for you!',
                       style: Theme.of(context).textTheme.headline4,
                     ),
                     const SizedBox(height: 20),
@@ -84,7 +84,7 @@ class JokeCardState extends State<JokeCard> {
                     if (joke.url != null)
                       OutlinedButton(
                         onPressed: openBrowser,
-                        child: const Text("Open in browser"),
+                        child: const Text('Open in browser'),
                       ),
                     ElevatedButton(
                       onPressed: () => widget.onDismissed(widget),
@@ -95,7 +95,7 @@ class JokeCardState extends State<JokeCard> {
                             vertical: 10,
                           ),
                           textStyle: Theme.of(context).textTheme.headline6),
-                      child: const Text("New joke"),
+                      child: const Text('New joke'),
                     ),
                   ],
                 ),

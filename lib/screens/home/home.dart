@@ -40,8 +40,7 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
@@ -52,5 +51,4 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
 }

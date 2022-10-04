@@ -5,13 +5,13 @@ class TinderChuckApp extends StatelessWidget {
   const TinderChuckApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Tinder Chuck',
-      theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
-      home: SafeArea(child: HomeScreen(title: 'Tinder with Chuck Norris')),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        title: 'Tinder Chuck',
+        theme: ThemeData(
+          primarySwatch: Colors.deepPurple,
+        ),
+        home: const SafeArea(
+          child: HomeScreen(title: 'Tinder with Chuck Norris'),
+        ),
+      );
 }
