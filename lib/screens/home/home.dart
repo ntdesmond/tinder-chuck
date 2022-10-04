@@ -41,14 +41,14 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(30),
-        child: Stack(
-          children: cards,
+        appBar: AppBar(
+          title: Text(widget.title),
         ),
-      ),
-    );
+        body: Padding(
+          padding: const EdgeInsets.all(30),
+          child: Stack(
+            children: cards,
+          ),
+        ),
+      );
 }

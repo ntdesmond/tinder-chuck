@@ -8,13 +8,13 @@ class JokeCardImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => AspectRatio(
-      aspectRatio: 1,
-      child: Container(
-        color: bgColor,
-        child: const Padding(
-          padding: EdgeInsets.all(20),
-          child: Image(image: AssetImage('assets/images/chucknorris.png')),
+        aspectRatio: 1,
+        child: Container(
+          color: bgColor,
+          child: const Padding(
+            padding: EdgeInsets.all(20),
+            child: Image(image: AssetImage('assets/images/chucknorris.png')),
+          ),
         ),
-      ),
-    );
+      );
 }

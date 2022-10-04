@@ -4,7 +4,6 @@ part 'joke.g.dart';
 
 @JsonSerializable()
 class Joke {
-
   Joke({required this.id, required this.value, this.url});
 
   factory Joke.fromJson(Map<String, dynamic> json) => _$JokeFromJson(json);

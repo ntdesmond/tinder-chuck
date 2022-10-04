@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tinder_chuck/models/joke.dart';
 import 'package:tinder_chuck/screens/home/widgets/joke_card/joke_card_image.dart';
 import 'package:tinder_chuck/services/joke_service.dart';
@@ -27,10 +28,13 @@ class JokeCardState extends State<JokeCard> {
   Joke joke = Joke(id: '', value: 'Loading...');
   final Color cardColor =
       Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
+  late final Color buttonContentColor;
 
   @override
   void initState() {
     super.initState();
+    buttonContentColor =
+        cardColor == Colors.yellow ? Colors.black : Colors.white;
     widget.service.getRandomJoke().then(
           (joke) => setState(() => this.joke = joke),
         );
@@ -48,7 +52,7 @@ class JokeCardState extends State<JokeCard> {
   Widget build(BuildContext context) {
     var card = Card(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.only(bottom: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -81,22 +85,51 @@ class JokeCardState extends State<JokeCard> {
                         child: Text(joke.value),
                       ),
                     ),
-                    if (joke.url != null)
-                      OutlinedButton(
-                        onPressed: openBrowser,
-                        child: const Text('Open in browser'),
-                      ),
-                    ElevatedButton(
-                      onPressed: () => widget.onDismissed(widget),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: cardColor,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          if (joke.url != null)
+                            Ink(
+                              decoration: ShapeDecoration(
+                                color: cardColor,
+                                shape: const CircleBorder(),
+                              ),
+                              child: IconButton(
+                                onPressed: openBrowser,
+                                icon: Icon(
+                                  Icons.open_in_browser,
+                                  color: buttonContentColor,
+                                ),
+                              ),
+                            ),
+                          Ink(
+                            decoration: ShapeDecoration(
+                              color: cardColor,
+                              shape: const CircleBorder(),
+                            ),
+                            child: IconButton(
+                              onPressed: () => Clipboard.setData(
+                                ClipboardData(text: joke.value),
+                              ).then(
+                                (value) => ScaffoldMessenger.of(
+                                  context,
+                                ).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Joke copied!'),
+                                  ),
+                                ),
+                              ),
+                              icon: Icon(
+                                Icons.copy,
+                                color: buttonContentColor,
+                              ),
+                            ),
                           ),
-                          textStyle: Theme.of(context).textTheme.headline6),
-                      child: const Text('New joke'),
+                        ],
+                      ),
                     ),
+                    const Text('👈 Swipe to get a new joke 👉'),
                   ],
                 ),
               ),
