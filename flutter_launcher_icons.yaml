@@ -1,0 +1,3 @@
+flutter_icons:
+  image_path_android: "assets/images/chucknorris.png"
+  android: true
