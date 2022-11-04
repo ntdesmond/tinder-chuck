@@ -1,12 +1,12 @@
-part of 'home_screen_bloc.dart';
+part of 'jokes_bloc.dart';
 
-abstract class HomeScreenState {
-  const HomeScreenState();
+abstract class JokesState {
+  const JokesState();
 }
 
-class HomeStateInitial extends HomeScreenState {}
+class JokesStateInitial extends JokesState {}
 
-class ShowingJokesState extends HomeScreenState {}
+class ShowingJokesState extends JokesState {}
 
 class JokeLoadedState extends ShowingJokesState {
   JokeLoadedState({required this.joke, required this.isStarred});

@@ -2,7 +2,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tinder_chuck/bloc/home/home_screen_bloc.dart';
+import 'package:tinder_chuck/bloc/jokes/jokes_bloc.dart';
 import 'package:tinder_chuck/data/models/joke.dart';
 import 'package:tinder_chuck/screens/home/widgets/joke_card/card_button.dart';
 import 'package:tinder_chuck/screens/home/widgets/joke_card/joke_card_image.dart';
@@ -92,18 +92,15 @@ class JokeCardState extends State<JokeCard> {
                               cardColor: cardColor,
                               buttonContentColor: buttonContentColor,
                               icon: Icons.open_in_browser,
-                              onPressed: () =>
-                                  context.read<HomeScreenBloc>().add(
-                                        JokeOpenBrowserEvent(widget.joke.url),
-                                      ),
+                              onPressed: () => context.read<JokesBloc>().add(
+                                    JokeOpenBrowserEvent(widget.joke.url),
+                                  ),
                             ),
                           CardButton(
                             cardColor: cardColor,
                             buttonContentColor: buttonContentColor,
-                            icon: isStarred
-                                ? Icons.star
-                                : Icons.star_border,
-                            onPressed: () => context.read<HomeScreenBloc>().add(
+                            icon: isStarred ? Icons.star : Icons.star_border,
+                            onPressed: () => context.read<JokesBloc>().add(
                                   JokeStarEvent(widget.joke, isStarred),
                                 ),
                           ),
@@ -111,7 +108,7 @@ class JokeCardState extends State<JokeCard> {
                             cardColor: cardColor,
                             buttonContentColor: buttonContentColor,
                             icon: Icons.copy,
-                            onPressed: () => context.read<HomeScreenBloc>().add(
+                            onPressed: () => context.read<JokesBloc>().add(
                                   JokeCopyEvent(widget.joke.value),
                                 ),
                           ),
@@ -128,7 +125,7 @@ class JokeCardState extends State<JokeCard> {
       ),
     );
 
-    return BlocListener<HomeScreenBloc, HomeScreenState>(
+    return BlocListener<JokesBloc, JokesState>(
       listener: (context, state) {
         // Listen for starred state update
         if (state is! JokeStarredState || state.joke != widget.joke) {
@@ -146,7 +143,7 @@ class JokeCardState extends State<JokeCard> {
         );
 
         setState(() => isStarred = state.isStarred);
-        context.read<HomeScreenBloc>().add(WidgetNotifiedEvent());
+        context.read<JokesBloc>().add(WidgetNotifiedEvent());
       },
       // Stretch the card and add Dismissible for swipe gestures
       child: ConstrainedBox(
