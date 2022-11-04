@@ -11,7 +11,7 @@ class TinderChuckApp extends StatelessWidget {
           primarySwatch: Colors.deepPurple,
         ),
         home: const SafeArea(
-          child: HomeScreen(title: 'Tinder with Chuck Norris'),
+          child: HomeScreen(),
         ),
       );
 }

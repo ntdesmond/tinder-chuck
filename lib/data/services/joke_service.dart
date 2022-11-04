@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'package:tinder_chuck/models/joke.dart';
+import 'package:tinder_chuck/data/models/joke.dart';
 
 class JokeService {
   JokeService({this.apiRoot = 'https://api.chucknorris.io/'})

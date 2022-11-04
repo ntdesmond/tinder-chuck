@@ -1,53 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:tinder_chuck/screens/home/widgets/joke_card/joke_card.dart';
-import 'package:tinder_chuck/services/joke_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tinder_chuck/bloc/home/home_screen_bloc.dart';
+import 'package:tinder_chuck/data/services/joke_service.dart';
+import 'package:tinder_chuck/screens/home/widgets/card_stack.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<HomeScreen> createState() => HomeScreenState();
-}
-
-class HomeScreenState extends State<HomeScreen> {
-  final int stackLength = 5;
-  List<JokeCard> cards = <JokeCard>[];
-
-  final JokeService service = JokeService();
-
-  void addNewJoke() {
-    var newCard = JokeCard(
-      key: UniqueKey(),
-      service: service,
-      onDismissed: switchCards,
-    );
-    cards = [newCard, ...cards];
-  }
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
 
   @override
-  void initState() {
-    super.initState();
-    for (int i = 0; i < stackLength; i++) {
-      addNewJoke();
-    }
-  }
-
-  void switchCards(JokeCard dismissedCard) {
-    setState(() => cards.remove(dismissedCard));
-    addNewJoke();
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(30),
-          child: Stack(
-            children: cards,
+  Widget build(BuildContext context) => BlocProvider<HomeScreenBloc>(
+        create: (_) => HomeScreenBloc(JokeService())..add(JokeLoadEvent()),
+        child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
+          buildWhen: (previous, current) => previous is HomeStateInitial,
+          builder: (context, state) => Scaffold(
+            appBar: AppBar(
+              title: const Text('Tinder with Chuck Norris'),
+            ),
+            body: const Padding(
+              padding: EdgeInsets.all(30),
+              child: CardStack(stackSize: 5),
+            ),
           ),
         ),
       );
