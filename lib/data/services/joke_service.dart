@@ -15,8 +15,7 @@ class JokeService {
     try {
       var response = await client.get('/jokes/random');
       return Joke.fromJson(response.data);
-    }
-    on DioError {
+    } on DioError {
       throw JokeServiceException();
     }
   }

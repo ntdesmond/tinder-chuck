@@ -21,14 +21,20 @@ class AppMenu extends StatelessWidget {
               ),
             ),
             ListTile(
+              title: const Text('Random jokes'),
+              leading: const Icon(Icons.casino),
+              onTap: () => Navigator.of(context).pop(),
+            ),
+            ListTile(
               title: const Text('Favorite jokes'),
               leading: const Icon(Icons.star),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const Favorites(),
+              onTap: () => Navigator.of(context)
+                ..pop()
+                ..push(
+                  MaterialPageRoute(
+                    builder: (context) => const Favorites(),
+                  ),
                 ),
-              ),
             ),
           ],
         ),
