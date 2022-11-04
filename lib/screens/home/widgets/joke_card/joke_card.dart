@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tinder_chuck/bloc/jokes/jokes_bloc.dart';
 import 'package:tinder_chuck/data/models/joke.dart';
-import 'package:tinder_chuck/screens/home/widgets/joke_card/card_button.dart';
+import 'package:tinder_chuck/widgets/card_button.dart';
 import 'package:tinder_chuck/screens/home/widgets/joke_card/joke_card_image.dart';
 
 // This widget is made stateful to keep the card color and starred state.
@@ -89,7 +89,7 @@ class JokeCardState extends State<JokeCard> {
                         children: [
                           if (widget.joke.url != null)
                             CardButton(
-                              cardColor: cardColor,
+                              buttonColor: cardColor,
                               buttonContentColor: buttonContentColor,
                               icon: Icons.open_in_browser,
                               onPressed: () => context.read<JokesBloc>().add(
@@ -97,7 +97,7 @@ class JokeCardState extends State<JokeCard> {
                                   ),
                             ),
                           CardButton(
-                            cardColor: cardColor,
+                            buttonColor: cardColor,
                             buttonContentColor: buttonContentColor,
                             icon: isStarred ? Icons.star : Icons.star_border,
                             onPressed: () => context.read<JokesBloc>().add(
@@ -105,7 +105,7 @@ class JokeCardState extends State<JokeCard> {
                                 ),
                           ),
                           CardButton(
-                            cardColor: cardColor,
+                            buttonColor: cardColor,
                             buttonContentColor: buttonContentColor,
                             icon: Icons.copy,
                             onPressed: () => context.read<JokesBloc>().add(
@@ -131,16 +131,18 @@ class JokeCardState extends State<JokeCard> {
         if (state is! JokeStarredState || state.joke != widget.joke) {
           return;
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              state.isStarred
-                  ? 'Joke added to favorites!'
-                  : 'Joke removed from favorites',
+        ScaffoldMessenger.of(context)
+          ..clearSnackBars()
+          ..showSnackBar(
+            SnackBar(
+              content: Text(
+                state.isStarred
+                    ? 'Joke added to favorites!'
+                    : 'Joke removed from favorites',
+              ),
+              duration: const Duration(seconds: 1),
             ),
-            duration: const Duration(seconds: 1),
-          ),
-        );
+          );
 
         setState(() => isStarred = state.isStarred);
         context.read<JokesBloc>().add(WidgetNotifiedEvent());

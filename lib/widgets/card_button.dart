@@ -4,20 +4,20 @@ class CardButton extends StatelessWidget {
   const CardButton({
     super.key,
     required this.onPressed,
-    required this.cardColor,
+    required this.buttonColor,
     required this.buttonContentColor,
     required this.icon,
   });
 
   final VoidCallback onPressed;
-  final Color cardColor;
+  final Color buttonColor;
   final Color buttonContentColor;
   final IconData icon;
 
   @override
   Widget build(BuildContext context) => Ink(
         decoration: ShapeDecoration(
-          color: cardColor,
+          color: buttonColor,
           shape: const CircleBorder(),
         ),
         child: IconButton(
