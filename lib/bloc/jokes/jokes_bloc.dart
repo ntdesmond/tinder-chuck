@@ -18,13 +18,24 @@ class JokesBloc extends Bloc<JokesEvent, JokesState> {
   ) : super(JokesStateInitial()) {
     on<JokeLoadEvent>(
       (event, emit) async {
-        final joke = await jokeService.getRandomJoke();
-        emit(
-          JokeLoadedState(
-            joke: joke,
-            isStarred: starredJokesBox.containsKey(joke.id),
-          ),
-        );
+        final Joke joke;
+        try {
+          joke = await jokeService.getRandomJoke();
+          emit(
+            JokeLoadedState(
+              joke: joke,
+              isStarred: starredJokesBox.containsKey(joke.id),
+            ),
+          );
+        } on JokeServiceException {
+          if (state is! NetworkErrorState) {
+            emit(NetworkErrorState());
+          }
+          Future.delayed(
+            const Duration(seconds: 1),
+            () => add(JokeLoadEvent()),
+          );
+        }
       },
     );
 

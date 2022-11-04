@@ -29,6 +29,23 @@ class _CardStackState extends State<CardStack> {
         style: Theme.of(context).textTheme.headlineMedium,
       ),
     );
+
+    final noNetwork = Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(
+            Icons.signal_wifi_statusbar_connected_no_internet_4,
+            size: 100,
+          ),
+          Text(
+            'Waiting for network...',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+        ],
+      ),
+    );
+
     return FutureBuilder(
       future: starredJokes,
       builder: (context, snapshot) => snapshot.hasData
@@ -41,6 +58,40 @@ class _CardStackState extends State<CardStack> {
                 buildWhen: (previous, current) => previous is JokesStateInitial,
                 builder: (context, state) => MultiBlocListener(
                   listeners: [
+                    BlocListener<JokesBloc, JokesState>(
+                      // Handle network restored event
+                      listenWhen: (previous, current) =>
+                          previous is NetworkErrorState &&
+                          current is! NetworkErrorState,
+                      listener: (context, state) {
+                        ScaffoldMessenger.of(context)
+                          ..clearSnackBars()
+                          ..showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.green,
+                              content: Text('Network connection restored'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                      },
+                    ),
+                    BlocListener<JokesBloc, JokesState>(
+                      // Handle network missing event
+                      listener: (context, state) {
+                        if (state is! NetworkErrorState) {
+                          return;
+                        }
+                        ScaffoldMessenger.of(context)
+                          ..clearSnackBars()
+                          ..showSnackBar(
+                            const SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text('Network connection missing'),
+                              duration: Duration(minutes: 5),
+                            ),
+                          );
+                      },
+                    ),
                     BlocListener<JokesBloc, JokesState>(
                       // Handle clipboard copy event
                       listener: (context, state) {
@@ -112,7 +163,9 @@ class _CardStackState extends State<CardStack> {
                   child: BlocBuilder<JokesBloc, JokesState>(
                     builder: (context, state) => state is ShowingJokesState
                         ? Stack(children: cards)
-                        : loading,
+                        : state is NetworkErrorState
+                            ? noNetwork
+                            : loading,
                   ),
                 ),
               ),

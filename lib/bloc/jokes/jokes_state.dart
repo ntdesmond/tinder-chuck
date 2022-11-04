@@ -6,6 +6,8 @@ abstract class JokesState {
 
 class JokesStateInitial extends JokesState {}
 
+class NetworkErrorState extends JokesState {}
+
 class ShowingJokesState extends JokesState {}
 
 class JokeLoadedState extends ShowingJokesState {
