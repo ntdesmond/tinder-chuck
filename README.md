@@ -20,10 +20,10 @@ Tinder, but the only candidate is Chuck Norris.
 <table>
 <tr>
 <th>
-Default view
+Random jokes screen
 </th>
 <th>
-Joke being copied
+Favorite jokes screen
 </th>
 <th>
 Demo video
@@ -31,10 +31,10 @@ Demo video
 </t>
 <tr>
 <td>
-<img src="https://user-images.githubusercontent.com/29694249/193936148-07b6cbb5-99eb-45bb-be49-593b8e3f6478.png" width="300"> 
+<img src="https://user-images.githubusercontent.com/29694249/200086149-ef6f81a8-4f7d-4030-8fd5-9c3cc072bc32.png" width="300"> 
 </td>
 <td>
-<img src="https://user-images.githubusercontent.com/29694249/193936144-5a3ef08a-ff1c-4472-acf4-cabef1643320.png" width="300">
+<img src="https://user-images.githubusercontent.com/29694249/200086168-0d3b78d4-bdf9-4741-ac8a-d7e95ed3e211.png" width="300">
 </td>
 <td>
 
