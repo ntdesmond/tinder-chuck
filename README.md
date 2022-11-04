@@ -14,6 +14,12 @@ Tinder, but the only candidate is Chuck Norris.
 - Joke text is scrollable if it does not fit fully on the card
 - Joke cards have a drawing of Chuck Norris from <https://github.com/chucknorris-io/>
   - Picture background color is randomized
+- Jokes can be marked as favorite
+  - It will make them available offline
+  - Favorite jokes are listed on a separate screen/page
+- Network connection errors are detected
+  - Network being restored is also detected
+
 
 ## Screenshots and video
 
