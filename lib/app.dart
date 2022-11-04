@@ -10,7 +10,7 @@ class TinderChuckApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.deepPurple,
         ),
-        home: const SafeArea(
+        home: SafeArea(
           child: HomeScreen(),
         ),
       );

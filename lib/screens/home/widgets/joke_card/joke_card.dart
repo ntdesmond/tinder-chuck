@@ -7,16 +7,25 @@ import 'package:tinder_chuck/data/models/joke.dart';
 import 'package:tinder_chuck/screens/home/widgets/joke_card/card_button.dart';
 import 'package:tinder_chuck/screens/home/widgets/joke_card/joke_card_image.dart';
 
-// This widget is made stateful to handle swipe gesture properly.
+// This widget is made stateful to keep the card color and starred state.
 class JokeCard extends StatefulWidget {
   const JokeCard({
-    super.key,
+    required super.key,
     required this.joke,
+    required this.isStarred,
     required this.onDismissed,
   });
 
   final Joke joke;
+  final bool isStarred;
   final VoidCallback onDismissed;
+
+  JokeCard starred({required bool isStarred}) => JokeCard(
+        key: UniqueKey(),
+        joke: joke,
+        isStarred: isStarred,
+        onDismissed: onDismissed,
+      );
 
   @override
   State<StatefulWidget> createState() => JokeCardState();
@@ -25,6 +34,7 @@ class JokeCard extends StatefulWidget {
 class JokeCardState extends State<JokeCard> {
   late Color cardColor;
   late Color buttonContentColor;
+  late bool isStarred;
 
   @override
   void initState() {
@@ -33,6 +43,7 @@ class JokeCardState extends State<JokeCard> {
         Colors.primaries[math.Random().nextInt(Colors.primaries.length)];
     buttonContentColor =
         cardColor == Colors.yellow ? Colors.black : Colors.white;
+    isStarred = widget.isStarred;
   }
 
   @override
@@ -89,6 +100,16 @@ class JokeCardState extends State<JokeCard> {
                           CardButton(
                             cardColor: cardColor,
                             buttonContentColor: buttonContentColor,
+                            icon: isStarred
+                                ? Icons.star
+                                : Icons.star_border,
+                            onPressed: () => context.read<HomeScreenBloc>().add(
+                                  JokeStarEvent(widget.joke, isStarred),
+                                ),
+                          ),
+                          CardButton(
+                            cardColor: cardColor,
+                            buttonContentColor: buttonContentColor,
                             icon: Icons.copy,
                             onPressed: () => context.read<HomeScreenBloc>().add(
                                   JokeCopyEvent(widget.joke.value),
@@ -107,14 +128,35 @@ class JokeCardState extends State<JokeCard> {
       ),
     );
 
-    // Stretch the card and add Dismissible for swipe gestures
-    return ConstrainedBox(
-      constraints: const BoxConstraints.expand(),
-      child: Dismissible(
-        key: ObjectKey(card),
-        onDismissed: (_) => widget.onDismissed(),
-        dismissThresholds: const {DismissDirection.horizontal: 0.2},
-        child: card,
+    return BlocListener<HomeScreenBloc, HomeScreenState>(
+      listener: (context, state) {
+        // Listen for starred state update
+        if (state is! JokeStarredState || state.joke != widget.joke) {
+          return;
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              state.isStarred
+                  ? 'Joke added to favorites!'
+                  : 'Joke removed from favorites',
+            ),
+            duration: const Duration(seconds: 1),
+          ),
+        );
+
+        setState(() => isStarred = state.isStarred);
+        context.read<HomeScreenBloc>().add(WidgetNotifiedEvent());
+      },
+      // Stretch the card and add Dismissible for swipe gestures
+      child: ConstrainedBox(
+        constraints: const BoxConstraints.expand(),
+        child: Dismissible(
+          key: ObjectKey(card),
+          onDismissed: (_) => widget.onDismissed(),
+          dismissThresholds: const {DismissDirection.horizontal: 0.2},
+          child: card,
+        ),
       ),
     );
   }

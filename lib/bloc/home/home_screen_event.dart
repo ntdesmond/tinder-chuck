@@ -16,4 +16,11 @@ class JokeOpenBrowserEvent extends HomeScreenEvent {
   final String? url;
 }
 
+class JokeStarEvent extends HomeScreenEvent {
+  JokeStarEvent(this.joke, this.isStarred);
+
+  final Joke joke;
+  final bool isStarred;
+}
+
 class WidgetNotifiedEvent extends HomeScreenEvent {}

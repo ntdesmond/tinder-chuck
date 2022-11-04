@@ -18,75 +18,76 @@ class _CardStackState extends State<CardStack> {
 
   @override
   Widget build(BuildContext context) => MultiBlocListener(
-      listeners: [
-        BlocListener<HomeScreenBloc, HomeScreenState>(
-          listener: (context, state) {
-            if (state is! JokeCopiedState) {
-              return;
-            }
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Joke copied!'),
-                duration: Duration(seconds: 1),
-              ),
-            );
-            context.read<HomeScreenBloc>().add(WidgetNotifiedEvent());
-          },
-        ),
-        BlocListener<HomeScreenBloc, HomeScreenState>(
-          listener: (context, state) {
-            if (state is! BrowserOpenErrorState) {
-              return;
-            }
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Joke URL is empty.'),
-              ),
-            );
-            context.read<HomeScreenBloc>().add(WidgetNotifiedEvent());
-          },
-        ),
-        BlocListener<HomeScreenBloc, HomeScreenState>(
-          listener: (context, state) {
-            if (state is! JokeLoadedState) {
-              return;
-            }
-            setState(
-              () {
-                cards = [
-                  JokeCard(
-                    key: UniqueKey(),
-                    joke: state.joke,
-                    onDismissed: () {
-                      setState(() {
-                        cards = [...cards]..removeWhere(
-                            (card) => card.joke.id == state.joke.id,
-                          );
-                      });
-                      context.read<HomeScreenBloc>().add(
-                            JokeLoadEvent(),
-                          );
-                    },
-                  ),
-                  ...cards,
-                ];
-              },
-            );
-            if (cards.length < widget.stackSize) {
-              context.read<HomeScreenBloc>().add(JokeLoadEvent());
-            }
-          },
-        ),
-      ],
-      child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
-        builder: (context, state) => state is ShowingJokesState
-            ? Stack(children: cards)
-            : Center(
-                child: Text(
-                  'Loading...',
-                  style: Theme.of(context).textTheme.headlineMedium,
+        listeners: [
+          BlocListener<HomeScreenBloc, HomeScreenState>(
+            listener: (context, state) {
+              if (state is! JokeCopiedState) {
+                return;
+              }
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Joke copied!'),
+                  duration: Duration(seconds: 1),
                 ),
-              ),
-      ),
-    );
+              );
+              context.read<HomeScreenBloc>().add(WidgetNotifiedEvent());
+            },
+          ),
+          BlocListener<HomeScreenBloc, HomeScreenState>(
+            listener: (context, state) {
+              if (state is! BrowserOpenErrorState) {
+                return;
+              }
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Joke URL is empty.'),
+                ),
+              );
+              context.read<HomeScreenBloc>().add(WidgetNotifiedEvent());
+            },
+          ),
+          BlocListener<HomeScreenBloc, HomeScreenState>(
+            listener: (context, state) {
+              if (state is! JokeLoadedState) {
+                return;
+              }
+              setState(
+                () {
+                  cards = [
+                    JokeCard(
+                      key: UniqueKey(),
+                      joke: state.joke,
+                      isStarred: state.isStarred,
+                      onDismissed: () {
+                        setState(() {
+                          cards = [...cards]..removeWhere(
+                              (card) => card.joke.id == state.joke.id,
+                            );
+                        });
+                        context.read<HomeScreenBloc>().add(
+                              JokeLoadEvent(),
+                            );
+                      },
+                    ),
+                    ...cards,
+                  ];
+                },
+              );
+              if (cards.length < widget.stackSize) {
+                context.read<HomeScreenBloc>().add(JokeLoadEvent());
+              }
+            },
+          ),
+        ],
+        child: BlocBuilder<HomeScreenBloc, HomeScreenState>(
+          builder: (context, state) => state is ShowingJokesState
+              ? Stack(children: cards)
+              : Center(
+                  child: Text(
+                    'Loading...',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                ),
+        ),
+      );
 }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:tinder_chuck/data/models/joke.dart';
 import 'package:tinder_chuck/data/services/joke_service.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -11,10 +12,30 @@ part 'home_screen_event.dart';
 part 'home_screen_state.dart';
 
 class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
-  HomeScreenBloc(this.service) : super(HomeStateInitial()) {
+  HomeScreenBloc(
+    this.jokeService,
+    this.starredJokesBox,
+  ) : super(HomeStateInitial()) {
     on<JokeLoadEvent>(
       (event, emit) async {
-        emit(JokeLoadedState(await service.getRandomJoke()));
+        final joke = await jokeService.getRandomJoke();
+        emit(
+          JokeLoadedState(
+            joke: joke,
+            isStarred: starredJokesBox.containsKey(joke.id),
+          ),
+        );
+      },
+    );
+
+    on<JokeStarEvent>(
+      (event, emit) async {
+        if (event.isStarred) {
+          await starredJokesBox.delete(event.joke.id);
+        } else {
+          await starredJokesBox.put(event.joke.id, event.joke);
+        }
+        emit(JokeStarredState(event.joke, !event.isStarred));
       },
     );
 
@@ -49,5 +70,6 @@ class HomeScreenBloc extends Bloc<HomeScreenEvent, HomeScreenState> {
     );
   }
 
-  final JokeService service;
+  final JokeService jokeService;
+  final Box<Joke> starredJokesBox;
 }
